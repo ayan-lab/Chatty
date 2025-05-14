@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
 const B_URL =
-  import.meta.env.MODE === "development" ? import.meta.env.VITE_BASE_URL : "/";
+  import.meta.env.MODE === "development" ? "https://chattybackend.vercel.app" : "/";
 
 const useAuthStore = create((set, get) => ({
   authUser: null,
