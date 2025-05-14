@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: "https://astonishing-toffee-10b2e4.netlify.app",
     credentials: true,
   })
 );
