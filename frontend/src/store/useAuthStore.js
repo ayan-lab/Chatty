@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
+import  fetchInstance  from "../lib/axios.js"; 
 import { io } from "socket.io-client";
 
 const B_URL =
-  import.meta.env.MODE === "development" ? "https://chattybackend.vercel.app" : "/";
+  import.meta.env.MODE === "development" ? import.meta.env.VITE_BASE_URL : "/";
 
 const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -17,8 +17,8 @@ const useAuthStore = create((set, get) => ({
 
   checkAuth: async () => {
     try {
-      const res = await axiosInstance.get("/auth/check");
-      set({ authUser: res.data });
+      const res = await fetchInstance("/auth/check", { method: "GET" });
+      set({ authUser: res });
       get().connectSocket();
     } catch (error) {
       console.log("Error in checkAuth:", error);
@@ -31,13 +31,15 @@ const useAuthStore = create((set, get) => ({
   signup: async (data) => {
     set({ isSigningUp: true });
     try {
-      const res = await axiosInstance.post("/auth/signup", data);
-      set({ authUser: res.data });
+      const res = await fetchInstance("/auth/signup", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      set({ authUser: res });
       toast.success("Account created successfully");
-
       get().connectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.message);
     } finally {
       set({ isSigningUp: false });
     }
@@ -46,13 +48,15 @@ const useAuthStore = create((set, get) => ({
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
-      const res = await axiosInstance.post("/auth/login", data);
-      set({ authUser: res.data });
+      const res = await fetchInstance("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      set({ authUser: res });
       toast.success("Logged in successfully");
-
       get().connectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.message);
     } finally {
       set({ isLoggingIn: false });
     }
@@ -60,24 +64,27 @@ const useAuthStore = create((set, get) => ({
 
   logout: async () => {
     try {
-      await axiosInstance.post("/auth/logout");
+      await fetchInstance("/auth/logout", { method: "POST" });
       set({ authUser: null });
       toast.success("Logged out successfully");
       get().disconnectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.message);
     }
   },
 
   updateProfile: async (data) => {
     set({ isUpdatingProfile: true });
     try {
-      const res = await axiosInstance.put("/auth/update-profile", data);
-      set({ authUser: res.data });
+      const res = await fetchInstance("/auth/update-profile", {
+        method: "PUT",
+        body: JSON.stringify(data),
+      });
+      set({ authUser: res });
       toast.success("Profile updated successfully");
     } catch (error) {
       console.log("error in update profile:", error);
-      toast.error(error.response.data.message);
+      toast.error(error.message);
     } finally {
       set({ isUpdatingProfile: false });
     }
@@ -100,6 +107,7 @@ const useAuthStore = create((set, get) => ({
       set({ onlineUsers: userIds });
     });
   },
+
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
   },
