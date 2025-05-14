@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
-import { axiosInstance } from "../lib/axios";
+import  fetchInstance  from "../lib/axios"; // Import fetchInstance
 import useAuthStore from "./useAuthStore";
 
 const useChatStore = create((set, get) => ({
@@ -13,10 +13,10 @@ const useChatStore = create((set, get) => ({
   getUsers: async () => {
     set({ isUsersLoading: true });
     try {
-      const res = await axiosInstance.get("/messages/users");
-      set({ users: res.data });
+      const res = await fetchInstance("/messages/users", { method: "GET" });
+      set({ users: res });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.message);
     } finally {
       set({ isUsersLoading: false });
     }
@@ -25,25 +25,26 @@ const useChatStore = create((set, get) => ({
   getMessages: async (userId) => {
     set({ isMessagesLoading: true });
     try {
-      const res = await axiosInstance.get(`/messages/${userId}`);
-      set({ messages: res.data });
+      const res = await fetchInstance(`/messages/${userId}`, { method: "GET" });
+      set({ messages: res });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.message);
     } finally {
       set({ isMessagesLoading: false });
     }
   },
+
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
     try {
-      const res = await axiosInstance.post(
-        `/messages/send/${selectedUser._id}`,
-        messageData
-      );
-      set({ messages: [...messages, res.data] });
+      const res = await fetchInstance(`/messages/send/${selectedUser._id}`, {
+        method: "POST",
+        body: JSON.stringify(messageData),
+      });
+      set({ messages: [...messages, res] });
     } catch (error) {
-      console.log("error in store")
-      toast.error(error.response.data.message);
+      console.log("error in store");
+      toast.error(error.message);
     }
   },
 
@@ -71,4 +72,5 @@ const useChatStore = create((set, get) => ({
 
   setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));
+
 export default useChatStore;
