@@ -37,7 +37,9 @@ const connection = async () => {
     process.exit(1);
   }
 };
-
+app.get("/",(req, res)=>{
+  res.json("welcome")
+})
 app.use("/api/auth", authRoute);
 app.use("/api/messages", messageRoute);
 
