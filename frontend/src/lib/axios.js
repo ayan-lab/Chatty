@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.MODE === "development" ? `${import.meta.env.VITE_BASE_URL}/api` : "/api",
+  baseURL: import.meta.env.MODE === "development" ? "https://chattybackend.vercel.app/api" : "/api",
   withCredentials: true,
 });
