@@ -16,7 +16,6 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://chatty-frontend-t18a.onrender.com",
-    method: ["PUT","GET","POST","UPDATE","DELETE"],
     credentials: true,
   })
 );
