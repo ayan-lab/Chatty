@@ -2,7 +2,7 @@
 const fetchInstance = async (url, options = {}) => {
   const baseUrl =
     import.meta.env.MODE === "development"
-      ? "https://chatty-backend-1i8b.onrender.com"
+      ? "https://chatty-backend-1i8b.onrender.com/api"
       : "/api";
 
   const response = await fetch(`${baseUrl}${url}`, {
