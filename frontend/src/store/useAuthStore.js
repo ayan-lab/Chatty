@@ -3,8 +3,8 @@ import toast from "react-hot-toast";
 import  fetchInstance  from "../lib/axios.js"; 
 import { io } from "socket.io-client";
 
-const B_URL =
-  import.meta.env.MODE === "development" ? import.meta.env.VITE_BASE_URL : "/";
+const B_URL = "https://chatty-backend-1i8b.onrender.com"
+  
 
 const useAuthStore = create((set, get) => ({
   authUser: null,
