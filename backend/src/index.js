@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://astonishing-toffee-10b2e4.netlify.app",
+    origin: "https://chatty-frontend-t18a.onrender.com",
     credentials: true,
   })
 );
