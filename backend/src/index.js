@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://lets-social.vercel.app",
+    origin: "https://chatty-frontend-t18a.onrender.com",
     credentials: true,
   })
 );
